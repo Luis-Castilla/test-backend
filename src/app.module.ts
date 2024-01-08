@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ResolverModule } from './resolver/resolvers.module';
 import { join } from 'path';
 import { DatabaseModule } from './database/database.module';
-import { PersistenceModule } from './persistence/persistence.module';
-import { DomainModule } from './domain/domain.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { appConfig } from './config/appBaseConfig';
 import { dataBaseConfig } from './config/dataBaseConfig';
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './users/user.module';
 
 @Module({
   imports: [
@@ -24,10 +22,8 @@ import { AuthModule } from './auth/auth.module';
       load: [dataBaseConfig, appConfig],
     }),
     DatabaseModule,
-    ResolverModule,
-    PersistenceModule,
-    DomainModule,
     AuthModule,
+    UserModule,
   ],
   providers: [ConfigService],
 })

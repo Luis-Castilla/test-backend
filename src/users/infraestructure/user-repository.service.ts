@@ -2,16 +2,15 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../../persistence/user/user.entity';
-import { SignupResponse } from 'src/auth/dto/signup-response';
-import { SigninUserInput } from 'src/auth/dto/signin-user.input';
+import { User } from './user.entity';
+import { SigninUserInput } from 'src/auth/presentation/dto/signin-user.input';
+import { SignupResponse } from 'src/auth/presentation/dto/signup-response';
 
 @Injectable()
-export class UserService {
+export class UserRepositoryService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
@@ -20,9 +19,7 @@ export class UserService {
     const { username, password } = createUserInput;
     const user = this.usersRepository.create({ username, password });
     try {
-      await this.usersRepository.save(user);
-      const { username } = user;
-      return { username };
+      return this.usersRepository.save(user);
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Username already exists.');
@@ -33,10 +30,14 @@ export class UserService {
   }
 
   async getUser(username: string): Promise<User> {
-    const user = await this.usersRepository.findOne({ where: { username } });
-    if (!user) {
-      throw new NotFoundException(`User ${username} not found.`);
-    }
-    return user;
+    return await this.usersRepository.findOne({ where: { username } });
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return await this.usersRepository.find();
+  }
+
+  mapDataToNames(data: User[]): string[] {
+    return data.map((item) => item.username);
   }
 }
