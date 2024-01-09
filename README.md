@@ -1,73 +1,105 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Test-Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Project to solve **Hiring Test for Sr. Engineer - Backend**
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Prerequisites
 
-## Description
+- [Node.js](https://nodejs.org/) (specified in `.nvmrc`)
+- [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/)
+- Docker Compose
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Setup
 
-## Installation
+### Install Dependencies
 
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-## Running the app
+### Start the Database
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+cd docker
+docker-compose up -d
 ```
 
-## Test
+## Development
+### Start the Server
 
 ```bash
-# unit tests
-$ pnpm run test
+pnpm run start:dev
+```
+### GraphQL Playground
 
-# e2e tests
-$ pnpm run test:e2e
+Explore and interact with the GraphQL API using GraphQL Playground:
 
-# test coverage
-$ pnpm run test:cov
+To access the Playground:
+1. Open your browser and go to [http://localhost:3000/graphql](http://localhost:3000/graphql).
+2. Use this interface to craft queries, mutations, and subscriptions to interact with the GraphQL API.
+
+#### Test Queries and Mutations
+
+1. **Signin Mutation**: Authenticate a user and receive an access token.
+    ```graphql
+    mutation {
+      signin(loginUserInput: {
+        username: "userToTest",
+        password: "Password123"
+      }) {
+        access_token
+        username
+      }
+    }
+    ```
+
+2. **Signup Mutation**: Register a new user.
+    ```graphql
+    mutation {
+      signup(loginUserInput: {
+        username: "userToTest",
+        password: "Password123"
+      }) {
+        username
+      }
+    }
+    ```
+
+3. **Get All Users Query**: Retrieve a list of all users.
+    ```graphql
+    query {
+      getAllUsers {
+        users
+      }
+    }
+    ```
+
+To use this query:
+1. First, authenticate a user by performing the Signin Mutation.
+2. Copy the access token from the response of the Signin Mutation.
+3. In GraphQL Playground, click on the "HTTP HEADERS" tab.
+4. Add the following header:
+    ```json
+    {
+      "Authorization": "Bearer <your-access-token>"
+    }
+    ```
+5. Execute the query.
+
+Ensure the server is running (`pnpm run start:dev`) to access and utilize GraphQL Playground effectively.
+
+### Run Tests
+
+```bash
+pnpm test # Run all the test suits
+pnpm test:watch # For watch mode
+pnpm test:cov # For coverage
 ```
 
-## Support
+### Code Formatting and Linting
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+pnpm run format  # Format code
+pnpm run lint    # Run ESLint
+```
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
