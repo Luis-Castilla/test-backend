@@ -6,8 +6,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { SigninUserInput } from 'src/auth/presentation/dto/signin-user.input';
-import { SignupResponse } from 'src/auth/presentation/dto/signup-response';
+import { SigninUserInput } from '../../auth/presentation/dto/signin-user.input';
+import { SignupResponse } from '../../auth/presentation/dto/signup-response';
 
 @Injectable()
 export class UserRepositoryService {
@@ -19,7 +19,8 @@ export class UserRepositoryService {
     const { username, password } = createUserInput;
     const user = this.usersRepository.create({ username, password });
     try {
-      return this.usersRepository.save(user);
+      const savedUser = await this.usersRepository.save(user);
+      return savedUser;
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Username already exists.');
@@ -35,9 +36,5 @@ export class UserRepositoryService {
 
   async getAllUsers(): Promise<User[]> {
     return await this.usersRepository.find();
-  }
-
-  mapDataToNames(data: User[]): string[] {
-    return data.map((item) => item.username);
   }
 }

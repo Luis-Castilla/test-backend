@@ -4,8 +4,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { SigninUserInput } from 'src/auth/presentation/dto/signin-user.input';
-import { SignupResponse } from 'src/auth/presentation/dto/signup-response';
+import { SigninUserInput } from '../../auth/presentation/dto/signin-user.input';
+import { SignupResponse } from '../../auth/presentation/dto/signup-response';
 import { User } from '../infraestructure/user.entity';
 import { UserRepositoryService } from '../infraestructure/user-repository.service';
 import { UserMapper } from '../mappers/user.mapper';
@@ -49,9 +49,8 @@ export class UserApplicationService {
     if (!users) {
       throw new NotFoundException(`Users not found.`);
     }
-    const response = new UsersResponse(
-      this.userMapper.getAllUsersMapper(users),
-    );
+    const usernamesMapped = this.userMapper.getAllUsersMapper(users);
+    const response = new UsersResponse(usernamesMapped);
     return response;
   }
 

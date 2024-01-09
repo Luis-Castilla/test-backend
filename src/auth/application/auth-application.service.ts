@@ -6,9 +6,9 @@ import {
 import { SigninUserInput } from '../presentation/dto/signin-user.input';
 import { SigninResponse } from '../presentation/dto/signin-response';
 import { SignupResponse } from '../presentation/dto/signup-response';
-import { User } from 'src/users/infraestructure/user.entity';
+import { User } from '../../users/infraestructure/user.entity';
 import { AuthDomainService } from '../domain/auth-domain.service';
-import { UserRepositoryService } from 'src/users/infraestructure/user-repository.service';
+import { UserRepositoryService } from '../../users/infraestructure/user-repository.service';
 
 @Injectable()
 export class AuthApplicationService {

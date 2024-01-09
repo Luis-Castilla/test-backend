@@ -4,10 +4,11 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserModule } from 'src/users/user.module';
+import { UserModule } from '../users/user.module';
 import { LocalStrategy } from './strategy/local.strategy';
 import { AuthDomainService } from './domain/auth-domain.service';
 import { AuthApplicationService } from './application/auth-application.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -31,6 +32,8 @@ import { AuthApplicationService } from './application/auth-application.service';
     AuthResolver,
     JwtStrategy,
     LocalStrategy,
+    JwtAuthGuard,
   ],
+  exports: [JwtAuthGuard],
 })
 export class AuthModule {}
